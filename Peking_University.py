@@ -3,13 +3,23 @@ from requests.exceptions import RequestException
 import re
 import json
 import time
-import csv
+import xlwt, xlrd
+import xlutils.copy
 
 PRO = '北京大学-教授-副教授-讲师.txt'
 ACA = '北京大学-院士.txt'
 YANG = '北京大学-长江学者人数.txt'
 REC = '北京大学-万人计划.txt'
 RES = '科研获奖.txt'
+
+count_1 = [0,0,0,0]
+count_2 = 0
+count_3 = 0
+count_4 = 0
+count_5 = 0
+count_6 = 0
+count_7 = 0
+count_8 = []
 
 def getOnePage(url):
 	try:
@@ -100,15 +110,12 @@ def parseOnePage_ResearchAward_3(html):
 			'name': item[1]
 		}
 
-def initCsv():
-	with open('Peking_University.csv', 'w') as f:
-		f_csv = csv.writer(f)
-		f_csv.writerow(['Index', 'Result'])
-
-def writeToCsv(row):
-	with open('Peking_University.csv', 'a', encoding = 'utf-8') as f:
-		f_csv = csv.writer(f)
-		f_csv.writerow(row)
+def writeToExcel(n, res):
+	f = xlrd.open_workbook('result.xls')
+	ws = xlutils.copy.copy(f)
+	table = ws.get_sheet(0)
+	table.write(1, n, res)
+	ws.save('result.xls')
 
 def writeToFile(name, content):
 	with open(name, 'a', encoding = 'utf-8') as f:
@@ -121,7 +128,7 @@ def Professor(offset):
 	html = getOnePage(url)
 	for item in parseOnePage_Professor(html):
 		print(item)
-		writeToFile(PRO, item)
+		# writeToFile(PRO, item)
 		if item['position'] == '教授':
 			count_1[0] += 1
 		elif item['position'] == '副教授':
@@ -137,7 +144,7 @@ def Academician(offset):
 	html = getOnePage(url)
 	for item in parseOnePage_Academician(html):
 		print(item)
-		writeToFile(ACA, item)
+		# writeToFile(ACA, item)
 		count_2 += 1
 
 def YangtzeRiverScholars():
@@ -146,7 +153,7 @@ def YangtzeRiverScholars():
 	html = getOnePage(url)
 	for item in parseOnePage_YangtzeRiverScholars(html):
 		print(item)
-		writeToFile(YANG, item)
+		# writeToFile(YANG, item)
 		count_3 += 1
 
 def RecruitmentProgram():
@@ -155,7 +162,7 @@ def RecruitmentProgram():
 	html = getOnePage(url)
 	for item in parseOnePage_RecruitmentProgram(html):
 		print(item)
-		writeToFile(REC, item)
+		# writeToFile(REC, item)
 		count_4 += 1
 
 def ResearchAward():
@@ -164,15 +171,15 @@ def ResearchAward():
 	html = getOnePage(url)
 	for item in parseOnePage_ResearchAward_1(html):
 		print(item)
-		writeToFile(RES, item)
+		# writeToFile(RES, item)
 		count_5 += 1
 	for item in parseOnePage_ResearchAward_2(html):
 		print(item)
-		writeToFile(RES, item)
+		# writeToFile(RES, item)
 		count_6 += 1
 	for item in parseOnePage_ResearchAward_3(html):
 		print(item)
-		writeToFile(RES, item)
+		# writeToFile(RES, item)
 		count_7 += 1
 
 def Library():
@@ -184,98 +191,52 @@ def Library():
 	count_8.append(item[0][0])
 	count_8.append(item[0][1] + item[0][2])
 
-def main():
-	i = ''
-	Professor(offset = i)
+def PKU():
+	Professor(offset = '')
 	for i in range(1,5):
 		Professor(offset = i)
 	print(count_1)
-	initCsv()
-	writeToCsv(['教授数量', count_1[0]])
-	writeToCsv(['副教授数量', count_1[1]])
-	writeToCsv(['讲师数量', count_1[2]])
-	writeToFile(PRO, '=============================================================================================')
+	writeToExcel(1, count_1[0])
+	writeToExcel(2, count_1[1])
+	writeToExcel(3, count_1[2])
+	'''writeToFile(PRO, '=============================================================================================')
 	result = {
 		'教授': count_1[0],
 		'副教授': count_1[1],
 		'讲师': count_1[2],
 		'研究员': count_1[3]
 	}
-	writeToFile(PRO, result)
+	writeToFile(PRO, result)'''
 	Academician(offset = '')
 	Academician(offset = '1')
 	print(count_2)
-	writeToCsv(['院士数量', count_2])
-	writeToFile(ACA, '=============================================================================================')
-	writeToFile(ACA, '院士: ' + str(count_2))
+	writeToExcel(4, count_2)
+	'''writeToFile(ACA, '=============================================================================================')
+	writeToFile(ACA, '院士: ' + str(count_2))'''
 	YangtzeRiverScholars()
 	print(count_3)
-	writeToCsv(['长江学者人数', count_3])
-	writeToFile(YANG, '=============================================================================================')
-	writeToFile(YANG, '长江学者: ' + str(count_3))
-	writeToCsv(['入选青年千人计划教师数量', '无数据'])
+	writeToExcel(5, count_3)
+	'''writeToFile(YANG, '=============================================================================================')
+	writeToFile(YANG, '长江学者: ' + str(count_3))'''
 	RecruitmentProgram()
 	print(count_4)
-	writeToCsv(['万人计划人数', count_4])
-	writeToFile(REC, '=============================================================================================')
-	writeToFile(REC, '万人计划: ' + str(count_4))
-	writeToCsv(['教师博士数量', '无数据'])
+	writeToExcel(7, count_4)
+	'''writeToFile(REC, '=============================================================================================')
+	writeToFile(REC, '万人计划: ' + str(count_4))'''
 	ResearchAward()
 	print(count_5)
-	writeToCsv(['国家奖', count_5])
-	writeToFile(RES, '=============================================================================================')
-	writeToFile(RES, '国家奖: ' + str(count_5))
+	writeToExcel(9, count_5)
 	print(count_6)
-	writeToCsv(['省部级奖', count_6])
-	writeToFile(RES, '省部级奖: ' + str(count_6))
+	writeToExcel(10, count_6)
 	print(count_7)
-	writeToCsv(['其他科研奖', count_7])
-	writeToFile(RES, '其他科研奖: ' + str(count_7))
-	writeToCsv(['专利数', '无数据'])
-	writeToCsv(['发表学术论文数量', '无数据'])
-	writeToCsv(['学术刊物论文数', '无数据'])
-	writeToCsv(['核心期刊论文数', '无数据'])
-	writeToCsv(['EI、SCI论文数', '无数据'])
-	writeToCsv(['论文引用量', '无数据'])
-	writeToCsv(['学术专著', '无数据'])
-	writeToCsv(['翻译专著', '无数据'])
-	writeToCsv(['五年科研经费合计', '无数据'])
-	writeToCsv(['每年科研经费', '无数据'])
-	writeToCsv(['目前科研经费', '无数据'])
-	writeToCsv(['目前科研项目数', '无数据'])
-	writeToCsv(['国家科研项目数', '无数据'])
-	writeToCsv(['省部科研项目数', '无数据'])
-	writeToCsv(['企事业委托项目', '无数据'])
-	writeToCsv(['国际合作项目', '无数据'])
-	writeToCsv(['本科生深造率比例', '无数据'])
-	writeToCsv(['平均每年授予博士学位数', '无数据'])
-	writeToCsv(['五年授予硕士学位数', '无数据'])
-	writeToCsv(['国家教学成果奖', '无数据'])
-	writeToCsv(['省部教学成果奖', '无数据'])
-	writeToCsv(['出版教材数', '无数据'])
-	writeToCsv(['省部重点实验室数', '无数据'])
-	writeToCsv(['国家重点实验室数', '无数据'])
+	writeToExcel(11, count_7)
+	'''writeToFile(RES, '=============================================================================================')
+	writeToFile(RES, '国家奖: ' + str(count_5))
+	writeToFile(RES, '省部级奖: ' + str(count_6))
+	writeToFile(RES, '其他科研奖: ' + str(count_7))'''
 	Library()
 	print(count_8)
-	writeToCsv(['中外文藏书合计', count_8[0]])
-	writeToCsv(['五年图书经费', '无数据'])
-	writeToCsv(['购买数据库数量', '无数据'])
-	writeToCsv(['中外文期刊种类', count_8[1]])
-	writeToCsv(['万元仪器数', '无数据'])
-	writeToCsv(['仪器设备总值', '无数据'])
-	writeToCsv(['五年投资仪器费', '无数据'])
-	writeToCsv(['外籍讲师比例', '无数据'])
-	writeToCsv(['双语课程比例', '无数据'])
-	writeToCsv(['国际化科研课题比例', '无数据'])
-	writeToCsv(['国际留学生比例', '无数据'])
+	writeToExcel(37, count_8[0])
+	writeToExcel(40, count_8[1])
 
-if __name__ == '__main__':
-	count_1 = [0,0,0,0]
-	count_2 = 0
-	count_3 = 0
-	count_4 = 0
-	count_5 = 0
-	count_6 = 0
-	count_7 = 0
-	count_8 = []
-	main()
+PKU()

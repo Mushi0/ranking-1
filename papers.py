@@ -18,7 +18,7 @@ def writeToExcel(n, res):
 	f = xlrd.open_workbook('result.xls')
 	ws = xlutils.copy.copy(f)
 	table = ws.get_sheet(0)
-	table.write(n + 1, 15, res)
+	table.write(n + 1, 16, res)
 	ws.save('result.xls')
 
 def MyClickClass(classname):
