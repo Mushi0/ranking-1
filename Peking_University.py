@@ -238,5 +238,3 @@ def PKU():
 	print(count_8)
 	writeToExcel(37, count_8[0])
 	writeToExcel(40, count_8[1])
-
-PKU()

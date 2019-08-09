@@ -9,78 +9,57 @@ import re
 import xlwt, xlrd
 import xlutils.copy
 
-LIST = ['Peking University', 'Tsinghua University', 'Beijing Normal University', 'Capital Normal University', 'Nankai University', 'Jilin University', 'Northeast Normal University', 'Fudan University', 'Shanghai Jiao Tong University', 'University of Science and Technology of China', 'Shandong University', 'Central South University', 'Sun Yat-sen University, SYSU', 'Sichuan University']
+LIST = ['北京大学', '清华大学', '北京师范大学', '首都师范大学', '南开大学', '吉林大学', '东北师范大学', '复旦大学', '上海交通大学', '中国科学技术大学', '山东大学', '中南大学', '中山大学', '四川大学']
 
-NUMBER = ''
-PASS = ''
-
-def writeToExcel(n, res):
+def writeToExcel(x, y, res):
 	f = xlrd.open_workbook('result.xls')
 	ws = xlutils.copy.copy(f)
 	table = ws.get_sheet(0)
-	table.write(n + 1, 16, res)
+	table.write(x + 1, y, res)
 	ws.save('result.xls')
 
-def MyClickClass(classname):
-	onclick = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, classname)))
-	onclick.click()
-
-def MyClickID(idname):
-	onclick = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, idname)))
-	onclick.click()
-
-def MySel(selname, selection):
-	onsel = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, selname)))
-	sel = Select(onsel)
-	sel.select_by_value(selection)
-
-def MyInpute(name, inputs):
-	input = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, name)))
-	input.clear()
-	input.send_keys(inputs)
+def getEleById(Id):
+	return WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, Id)))
 
 def papers():
 	global browser
 	browser = webdriver.Chrome()
-	browser.get('http://125.70.226.88:8888/login')
-	input = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.NAME, 'username')))
-	# input = browser.find_element_by_name('username')
-	input.send_keys(NUMBER)
-	input = browser.find_element_by_name('password')
-	input.send_keys(PASS)
-	input.send_keys(Keys.ENTER)
-	try:
-		MyClickClass('layui-layer-btn0')
-	except:
-		print('')
-	onclick = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[4]/div[2]/div[1]')))
-	# onclick = browser.find_element_by_xpath('/html/body/div[4]/div[2]/div[1]')
-	onclick.click()
-	time.sleep(2)
-	handle1 = browser.current_window_handle
-	handles = browser.window_handles
-	for newhandle in handles:
-		if newhandle != handle1:
-			browser.switch_to_window(newhandle)
-	onclick = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'EI Compendex')))
-	# onclick = browser.find_element_by_xpath('//*[@id="result_list"]/table/tbody/tr[6]/td[2]')
-	onclick.click()
-	time.sleep(2)
-	handle2 = browser.current_window_handle
-	handles = browser.window_handles
-	for newhandle in handles:
-		if newhandle != handle1:
-			if newhandle != handle2:
-				browser.switch_to_window(newhandle)
-	MyClickClass('button')
-	MyClickID('add-searchfield-link')
-	MySel('sect1', 'AF')
-	MySel('field_c330', 'KY')
-	MyInpute('search-word-c330', 'Mathematics')
+	browser.get('https://kns.cnki.net/kns/brief/result.aspx?dbprefix=CJFQ')
+	input = getEleById('au_1_value2')
+	onclick0 = getEleById('AllmediaBox')
+	onclick1 = getEleById('mediaBox2')
+	onclick2 = getEleById('btnSearch')
+	onclick3 = getEleById('mediaBox1')
 	for i, uni in enumerate(LIST):
-		MyInpute('search-word-1', uni)
-		MyClickID('searchBtn')
-		result = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, 'results-count')))
-		result = re.findall(r'(.*?) records', result.text)
+		onclick0.click()
+		input.clear()
+		input.send_keys(uni + '数学')
+		input.send_keys(Keys.ENTER)
+		browser.switch_to.frame('iframeResult')
+		time.sleep(2)
+		result = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'pagerTitleCell')))
+		result = re.findall(r' 找到 (.*?) 条结果 ', result.text)
 		print(result[0])
-		writeToExcel(i, result[0])
+		writeToExcel(i, 14, result[0])
+		browser.switch_to.parent_frame()
+		onclick1.click()
+		browser.execute_script("arguments[0].scrollIntoView()", onclick2)
+		onclick2.click()
+		browser.switch_to.frame('iframeResult')
+		time.sleep(2)
+		result = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'pagerTitleCell')))
+		result = re.findall(r' 找到 (.*?) 条结果 ', result.text)
+		print(result[0])
+		writeToExcel(i, 16, result[0])
+		browser.switch_to.parent_frame()
+		onclick3.click()
+		browser.execute_script("arguments[0].scrollIntoView()", onclick2)
+		onclick2.click()
+		browser.switch_to.frame('iframeResult')
+		time.sleep(2)
+		result = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'pagerTitleCell')))
+		result = re.findall(r' 找到 (.*?) 条结果 ', result.text)
+		print(result[0])
+		writeToExcel(i, 17, result[0])
+		browser.switch_to.parent_frame()
+	browser.close()
