@@ -35,6 +35,35 @@ def getResult(i, n):
 def clickOnSearch(onclick2):
 	browser.execute_script("arguments[0].scrollIntoView()", onclick2)
 	onclick2.click()
+	checkCode()
+
+def checkCode():
+	try:
+		'''# 验证码真可恶
+		element = getEleById('CheckCodeImg')
+		img_url = element.get_attribute('src')
+		image = urllib.request.urlopen(img_url).read()
+		f = open('code.jpg', 'wb')
+		f.write(image)
+		f.close()
+		image = Image.open('code.jpg')
+		# image.convert('1')
+		code = tesserocr.image_to_text(image)
+		print(code)
+		input = getEleById('CheckCode')
+		input.send_keys(code)
+		onclick = browser.find_elements_by_xpath('/html/body/p[1]/input[2]')
+		browser.execute_script("arguments[0].scrollIntoView()", onclick)
+		onclick.click()'''
+		browser.find_element_by_id('CheckCodeImg')
+		print('Please enter check code. ')
+		while(1):
+			try:
+				browser.find_element_by_id('CheckCodeImg')
+			except:
+				break
+	except:
+		print('', end='')
 
 def reference(i):
 	sum = 0
@@ -49,24 +78,7 @@ def reference(i):
 			sum += int(result.text)
 		# time.sleep(3)
 		onclick.click()
-		if t%15 == 0:
-			'''# 验证码真可恶
-			element = getEleById('CheckCodeImg')
-			img_url = element.get_attribute('src')
-			image = urllib.request.urlopen(img_url).read()
-			f = open('code.jpg', 'wb')
-			f.write(image)
-			f.close()
-			image = Image.open('code.jpg')
-			# image.convert('1')
-			code = tesserocr.image_to_text(image)
-			print(code)
-			input = getEleById('CheckCode')
-			input.send_keys(code)
-			onclick = browser.find_elements_by_xpath('/html/body/p[1]/input[2]')
-			browser.execute_script("arguments[0].scrollIntoView()", onclick)
-			onclick.click()'''
-			time.sleep(5)
+		checkCode()
 		if not getEleById('Page_next'):
 			break
 		t += 1
@@ -89,11 +101,14 @@ def papers():
 		input.clear()
 		input.send_keys(uni + '数学')
 		input.send_keys(Keys.ENTER)
+		checkCode()
 		getResult(i, 14)
 		onclick = browser.find_element_by_xpath('//div[@id="id_grid_display_num"]/a[3]')
 		onclick.click()
+		checkCode()
 		onclick = browser.find_element_by_xpath('//*[@id="J_ORDER"]/tbody/tr[1]/td/table/tbody/tr/td[1]/span[4]/a')
 		onclick.click()
+		checkCode()
 		reference(i)
 		browser.switch_to.parent_frame()
 		onclick1.click()
@@ -111,5 +126,3 @@ def papers():
 		getResult(i, 15)
 		browser.switch_to.parent_frame()
 	browser.close()
-
-papers()
