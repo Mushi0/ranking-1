@@ -29,6 +29,8 @@ def getOnePage(url):
 		response = requests.get(url, headers = headers)
 		if response.status_code == 200:
 			return response.content.decode('utf-8')
+		else:
+			print(response)
 		return None
 	except RequestException:
 		return None

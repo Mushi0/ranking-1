@@ -89,6 +89,17 @@ def reference(i):
 def papers():
 	global browser
 	browser = webdriver.Chrome()
+	browser.get('https://kns.cnki.net/kns/brief/result.aspx?dbprefix=SCDB')
+	input = getEleById('au_1_value2')
+	for i, uni in enumerate(LIST):
+		input.clear()
+		input.send_keys(uni + '数学')
+		input.send_keys(Keys.ENTER)
+		checkCode()
+		getResult(i, 13)
+		browser.switch_to.parent_frame()
+	browser.close()
+	browser = webdriver.Chrome()
 	browser.get('https://kns.cnki.net/kns/brief/result.aspx?dbprefix=CJFQ')
 	input = getEleById('au_1_value2')
 	onclick0 = getEleById('AllmediaBox')
