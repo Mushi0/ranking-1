@@ -61,5 +61,3 @@ def Scholars():
 def SCU():
 	Professor()
 	Scholars()
-
-SCU()

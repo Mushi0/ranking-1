@@ -1,5 +1,6 @@
 import papers
 import Peking_University
+import Sichuan_University
 import xlwt, xlrd
 
 def initExcel():
@@ -17,6 +18,7 @@ def main():
 	initExcel()
 	papers.papers()
 	Peking_University.PKU()
+	Sichuan_University.SCU()
 
 if __name__ == '__main__':
 	main()
