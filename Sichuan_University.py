@@ -19,9 +19,6 @@ def writeToExcel(n, res):
 def getEleById(Id):
 	return WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, Id)))
 
-def getEleById_2(Id):
-	return WebDriverWait(browser2, 10).until(EC.presence_of_element_located((By.ID, Id)))
-
 def Professor():
 	url = 'http://math.scu.edu.cn/info/1013/2721.htm'
 	global browser
@@ -42,13 +39,14 @@ def Professor():
 			writeToExcel(order[i], result)
 			print(name[i] + ': ' + result[0])
 	browser.close()
+	del browser
 
 def Scholars():
 	url = 'http://math.scu.edu.cn/szdw/gdrc.htm'
-	global browser2
-	browser2 = webdriver.Firefox()
-	browser2.get(url)
-	element = getEleById_2('vsb_content_4').text
+	global browser
+	browser = webdriver.Firefox()
+	browser.get(url)
+	element = getEleById('vsb_content_4').text
 	pattern = re.compile('国家青年千人计划入选者\n(\d+).*?教育部青年长江学者\n(\d+).*?“万人计划“科技创新领军人才\n(\d+).*?', re.S)
 	scholars = re.findall(pattern, element)
 	order = [6, 5, 7]
@@ -56,7 +54,7 @@ def Scholars():
 	for i, item in enumerate(scholars[0]):
 		writeToExcel(order[i], item)
 		print(name[i] + ': ' + item)
-	browser2.close()
+	browser.close()
 
 def SCU():
 	Professor()
