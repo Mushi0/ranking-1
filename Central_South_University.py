@@ -7,7 +7,7 @@ def writeToExcel(n, res):
 	f = xlrd.open_workbook('result.xls')
 	ws = xlutils.copy.copy(f)
 	table = ws.get_sheet(0)
-	table.write(13, n, res)
+	table.write(12, n, res)
 	ws.save('result.xls')
 
 def listAdd(a, b):
@@ -51,5 +51,3 @@ def Library():
 def CSU():
 	Professor()
 	Library()
-
-CSU()

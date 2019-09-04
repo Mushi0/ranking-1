@@ -2,6 +2,8 @@ import papers
 import Peking_University
 import Sichuan_University
 import Fudan_University
+import Central_South_University
+import Sun_Yat-sen_University
 import xlwt, xlrd
 
 def initExcel():
@@ -21,6 +23,8 @@ def main():
 	Peking_University.PKU()
 	Sichuan_University.SCU()
 	Fudan_University.FU()
+	Central_South_University.CSU()
+	Sun_Yat-sen_University.SYSU()
 
 if __name__ == '__main__':
 	main()
