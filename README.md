@@ -30,3 +30,7 @@ It is meant to crawl some informations on the website of Sichuan University.
 ### Fudan_University.py
 
 It is meant to crawl some informations on the website of Fudan University. 
+
+### Central_South_University.py
+
+It is meant to crawl some informations on the website of Central South University. 
