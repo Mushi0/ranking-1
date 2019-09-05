@@ -1,10 +1,7 @@
-import requests
-from requests.exceptions import RequestException
 import re
 import json
 import time
-import xlwt, xlrd
-import xlutils.copy
+import MyRanking as mr
 
 PRO = '北京大学-教授-副教授-讲师.txt'
 ACA = '北京大学-院士.txt'
@@ -20,20 +17,6 @@ count_5 = 0
 count_6 = 0
 count_7 = 0
 count_8 = []
-
-def getOnePage(url):
-	try:
-		headers = {
-			'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
-		}
-		response = requests.get(url, headers = headers)
-		if response.status_code == 200:
-			return response.content.decode('utf-8')
-		else:
-			print(response)
-		return None
-	except RequestException:
-		return None
 
 def parseOnePage_Professor(html):
 	pattern = re.compile('<div class="left_info">.*?<h3>(.*?)</h3>.*?职  称：.*?<i>(.*?)</i></p>.*?研究方向：.*?<i>(.*?)</i></p>', re.S)
@@ -113,21 +96,17 @@ def parseOnePage_ResearchAward_3(html):
 		}
 
 def writeToExcel(n, res):
-	f = xlrd.open_workbook('result.xls')
-	ws = xlutils.copy.copy(f)
-	table = ws.get_sheet(0)
-	table.write(1, n, res)
-	ws.save('result.xls')
+	mr.writeToExcel(1, n, res)
 
-def writeToFile(name, content):
+'''def writeToFile(name, content):
 	with open(name, 'a', encoding = 'utf-8') as f:
 		#print(type(json.dumps(content)))
-		f.write(json.dumps(content, ensure_ascii = False) + '\n')
+		f.write(json.dumps(content, ensure_ascii = False) + '\n')'''
 
 def Professor(offset):
 	global count_1
 	url = 'http://www.math.lb.pku.edu.cn/jsdw/js_20180628175159671361/index' + str(offset) + '.htm'
-	html = getOnePage(url)
+	html = mr.getOnePage(url)
 	for item in parseOnePage_Professor(html):
 		print(item)
 		# writeToFile(PRO, item)
@@ -143,7 +122,7 @@ def Professor(offset):
 def Academician(offset):
 	global count_2
 	url = 'http://www.math.lb.pku.edu.cn/jsdw/zgkxyys/index' + offset + '.htm'
-	html = getOnePage(url)
+	html = mr.getOnePage(url)
 	for item in parseOnePage_Academician(html):
 		print(item)
 		# writeToFile(ACA, item)
@@ -152,7 +131,7 @@ def Academician(offset):
 def YangtzeRiverScholars():
 	global count_3
 	url = 'http://www.math.lb.pku.edu.cn/jsdw/rcjh/index.htm'
-	html = getOnePage(url)
+	html = mr.getOnePage(url)
 	for item in parseOnePage_YangtzeRiverScholars(html):
 		print(item)
 		# writeToFile(YANG, item)
@@ -161,7 +140,7 @@ def YangtzeRiverScholars():
 def RecruitmentProgram():
 	global count_4
 	url = 'http://www.math.lb.pku.edu.cn/jsdw/rcjh/index.htm'
-	html = getOnePage(url)
+	html = mr.getOnePage(url)
 	for item in parseOnePage_RecruitmentProgram(html):
 		print(item)
 		# writeToFile(REC, item)
@@ -170,7 +149,7 @@ def RecruitmentProgram():
 def ResearchAward():
 	global count_5, count_6, count_7
 	url = 'http://www.math.lb.pku.edu.cn/kxyj/kyjl/index.htm'
-	html = getOnePage(url)
+	html = mr.getOnePage(url)
 	for item in parseOnePage_ResearchAward_1(html):
 		print(item)
 		# writeToFile(RES, item)
@@ -187,11 +166,11 @@ def ResearchAward():
 def Library():
 	global count_8
 	url = 'http://www.math.lb.pku.edu.cn/kxyj/ytsg/index.htm'
-	html = getOnePage(url)
+	html = mr.getOnePage(url)
 	pattern = re.compile('现有纸版文献.*?"font-size:16px">(.*?)</span>.*?外文期刊.*?"font-size:16px">(.*?)</span>.*?中文期刊.*?"font-size:16px">(.*?)</span>', re.S)
-	item = re.findall(pattern, html)
-	count_8.append(item[0][0])
-	count_8.append(item[0][1] + item[0][2])
+	item = re.findall(pattern, html)[0]
+	count_8.append(item[0])
+	count_8.append(item[1] + item[2])
 
 def PKU():
 	Professor(offset = '')

@@ -6,20 +6,12 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 from selenium.webdriver.support.select import Select
 import re
-import xlwt, xlrd
-import xlutils.copy
+import MyRanking as mr
 import urllib.request
 import tesserocr
 from PIL import Image
 
 LIST = ['北京大学', '清华大学', '北京师范大学', '首都师范大学', '南开大学', '吉林大学', '东北师范大学', '复旦大学', '上海交通大学', '中国科学技术大学', '山东大学', '中南大学', '中山大学', '四川大学']
-
-def writeToExcel(x, y, res):
-	f = xlrd.open_workbook('result.xls')
-	ws = xlutils.copy.copy(f)
-	table = ws.get_sheet(0)
-	table.write(x + 1, y, res)
-	ws.save('result.xls')
 
 def getEleById(Id):
 	return WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, Id)))
@@ -30,7 +22,7 @@ def getResult(i, n):
 	result = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'pagerTitleCell')))
 	result = re.findall(r' 找到 (.*?) 条结果 ', result.text)
 	print(result[0])
-	writeToExcel(i, n, result[0])
+	writeToExcel(i + 1, n, result[0])
 
 def clickOnSearch(onclick2):
 	browser.execute_script("arguments[0].scrollIntoView()", onclick2)
@@ -83,7 +75,7 @@ def reference(i):
 			break
 		t += 1
 		print(t, sum)
-	writeToExcel(i, 18, sum)
+	writeToExcel(i + 1, 18, sum)
 	print(sum)
 
 def papers():

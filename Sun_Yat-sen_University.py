@@ -1,4 +1,3 @@
-from requests.exceptions import RequestException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -7,15 +6,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 import re
 import json
 import time
-import xlwt, xlrd
-import xlutils.copy
+import MyRanking as mr
 
 def writeToExcel(n, res):
-	f = xlrd.open_workbook('result.xls')
-	ws = xlutils.copy.copy(f)
-	table = ws.get_sheet(0)
-	table.write(13, n, res)
-	ws.save('result.xls')
+	mr.writeToExcel(13, n, res)
 
 def getEleByXpath(Xpath):
 	return WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, Xpath)))
@@ -44,15 +38,6 @@ def parse1(pos):
 	del driver
 	return count
 
-def parse2(element, pre, aft):
-	r = pre + '(.*?)' + aft
-	pattern = re.compile(r, re.S)
-	temp = re.findall(pattern, element)[0]
-	pattern1 = re.compile('.*?(\n).*?', re.S)
-	temp = re.findall(pattern1, temp)
-	count = len(temp) - 1
-	return count
-
 def Professors():
 	count = [0, 0, 0]
 	count[0] = parse1('professors')
@@ -74,15 +59,14 @@ def Scholars():
 	driver = webdriver.Firefox(firefox_options = fireFoxOptions)
 	# driver = webdriver.Firefox()
 	driver.get(url)
-	time.sleep(4)
 	element = getEleByXpath('//*[@id="content"]/article/div/div/div[2]/div[2]/div/div[2]/div')
 	element = element.text
 	driver.close()
 	del driver
-	count[0] = parse2(element, '特聘教授', '（六）')
-	count[1] = parse2(element, '（十四）', '（十五）')
-	count[2] = parse2(element, '（十五）', '（十六）')
-	count[2] += parse2(element, '（十六）', '（十七）')
+	count[0] = mr.parse2(element, '特聘教授', '（六）')
+	count[1] = mr.parse2(element, '（十四）', '（十五）')
+	count[2] = mr.parse2(element, '（十五）', '（十六）')
+	count[2] += mr.parse2(element, '（十六）', '（十七）')
 	print(count)
 	for i, item in enumerate(count):
 		writeToExcel(i + 5, item)
@@ -95,7 +79,6 @@ def Library():
 	driver = webdriver.Firefox(firefox_options = fireFoxOptions)
 	# driver = webdriver.Firefox()
 	driver.get(url)
-	time.sleep(4)
 	element = getEleByXpath('//*[@id="content"]/article/div/div/div[2]/div[2]/div/div[2]/div')
 	element = element.text
 	driver.close()

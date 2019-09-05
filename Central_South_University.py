@@ -1,14 +1,8 @@
 import re
-import xlwt, xlrd
-import xlutils.copy
-import requests
+import MyRanking as mr
 
 def writeToExcel(n, res):
-	f = xlrd.open_workbook('result.xls')
-	ws = xlutils.copy.copy(f)
-	table = ws.get_sheet(0)
-	table.write(12, n, res)
-	ws.save('result.xls')
+	mr.writeToExcel(12, n, res)
 
 def listAdd(a, b):
 	for i in range(len(a)):
@@ -20,8 +14,7 @@ def parseOnePage_Professor(dep):
 	count = [0, 0, 0]
 	for i, pos in enumerate(positions):
 		url = 'http://math.csu.edu.cn/szdw/' + dep + '/' + pos + '.htm'
-		response = requests.get(url)
-		html = response.content.decode('utf-8')
+		html = mr.getOnePage(url)
 		pattern = re.compile('font-size:9pt', re.S)
 		items = re.findall(pattern, html)
 		count[i] = int(len(items)/2)
@@ -40,8 +33,7 @@ def Professor():
 
 def Library():
 	url = 'http://lib.csu.edu.cn/bgjs.jhtml'
-	response = requests.get(url)
-	html = response.content.decode('utf-8')
+	html = mr.getOnePage(url)
 	pattern = re.compile('纸质文献总量(.*?)万余册', re.S)
 	item = re.findall(pattern, html)[0]
 	count1 = int(float(item) * 10000)

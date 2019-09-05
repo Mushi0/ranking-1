@@ -37,4 +37,12 @@ It is meant to crawl some informations on the website of Central South Universit
 
 ### Sun_Yat-sen_University.py
 
-It is meant to crawl some informations on the website of Sun Yat-sen University. 
+It is meant to crawl some informations on the website of Sun Yat-sen University.
+
+### Shandong_University.py
+
+It is meant to crawl some informations on the website of Sun Shandong University. 
+
+### University_of_Science_and_Technology_of_China.py
+
+It is meant to crawl some informations on the website of Sun University of Science and Technology of China. 

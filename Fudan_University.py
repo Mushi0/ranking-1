@@ -6,16 +6,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 from selenium.webdriver.support.select import Select
 import re
-import xlwt, xlrd
-import xlutils.copy
-import requests
+import MyRanking as mr
 
 def writeToExcel(n, res):
-	f = xlrd.open_workbook('result.xls')
-	ws = xlutils.copy.copy(f)
-	table = ws.get_sheet(0)
-	table.write(8, n, res)
-	ws.save('result.xls')
+	mr.writeToExcel(8, n, res)
 
 def getEleByXpath(Xpath):
 	return WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.XPATH, Xpath)))
@@ -116,8 +110,7 @@ def Projects_2(count):
 
 def Library():
 	url = 'http://www.library.fudan.edu.cn/60/list.htm'
-	response = requests.get(url)
-	html = response.content.decode('utf-8')
+	html = mr.getOnePage(url)
 	pattern = re.compile('馆藏纸本文献资源约</span><span lang="EN-US" style="color:#333333;">(.*?)</span>.*?中文报刊</span><span lang="EN-US" style="color:#333333;">(.*?)</span>.*?外文报刊</span><span lang="EN-US" style="color:#333333;">(.*?)</span>', re.S)
 	items = re.findall(pattern, html)[0]
 	count1 = int(float(items[0]) * 10000)

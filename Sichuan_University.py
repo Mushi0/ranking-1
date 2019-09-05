@@ -6,15 +6,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 from selenium.webdriver.support.select import Select
 import re
-import xlwt, xlrd
-import xlutils.copy
+import MyRanking as mr
 
 def writeToExcel(n, res):
-	f = xlrd.open_workbook('result.xls')
-	ws = xlutils.copy.copy(f)
-	table = ws.get_sheet(0)
-	table.write(14, n, res)
-	ws.save('result.xls')
+	mr.writeToExcel(14, n, res)
 
 def getEleById(Id):
 	return WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, Id)))
