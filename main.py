@@ -9,6 +9,9 @@ import Shandong_University
 import University_of_Science_and_Technology_of_China
 import Shanghai_Jiao_Tong_University
 import Northest_Normal_University
+import Jilin_University
+import Nankai_University
+import Capital_Normal_University
 
 def main():
 	mr.initExcel()
@@ -22,6 +25,9 @@ def main():
 	University_of_Science_and_Technology_of_China.USTC()
 	Shanghai_Jiao_Tong_University.SJTU()
 	Northest_Normal_University.NENU()
+	Jilin_University.JLU()
+	Nankai_University.NKU()
+	Capital_Normal_University.CNU()
 
 if __name__ == '__main__':
 	main()

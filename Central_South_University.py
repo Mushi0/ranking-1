@@ -4,11 +4,6 @@ import MyRanking as mr
 def writeToExcel(n, res):
 	mr.writeToExcel(12, n, res)
 
-def listAdd(a, b):
-	for i in range(len(a)):
-		a[i] += b[i]
-	return(a)
-
 def parseOnePage_Professor(dep):
 	positions = ['js', 'fjs', 'js1']
 	count = [0, 0, 0]
@@ -26,7 +21,7 @@ def Professor():
 	for dep in departments:
 		c = parseOnePage_Professor(dep)
 		print(c)
-		count = listAdd(count, c)
+		count = mr.listAdd(count, c)
 	print(count)
 	for i, item in enumerate(count):
 		writeToExcel(i + 1, item)

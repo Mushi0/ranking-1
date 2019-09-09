@@ -22,6 +22,11 @@ def writeToExcel(x, y, res):
 	table.write(x, y, res)
 	ws.save('result.xls')
 
+def listAdd(a, b):
+	for i in range(len(a)):
+		a[i] += b[i]
+	return(a)
+
 def getOnePage(url):
 	try:
 		headers = {

@@ -54,3 +54,15 @@ It is meant to crawl some informations on the website of Shanghai Jiao Tong Univ
 ### Northest_Normal_University.py
 
 It is meant to crawl some informations on the website of Northest Normal University. 
+
+### Jilin_University.py
+
+It is meant to crawl some informations on the website of Northest Jilin University. 
+
+### Nankai_University.py
+
+It is meant to crawl some informations on the website of Northest Nankai University. 
+
+### Capital_Normal_University.py
+
+It is meant to crawl some informations on the website of Northest Capital Normal University. 
