@@ -7,7 +7,6 @@ import re
 import json
 import time
 import MyRanking as mr
-from pyquery import PyQuery as pq
 
 def writeToExcel(n, res):
 	mr.writeToExcel(7, n, res)

@@ -66,3 +66,11 @@ It is meant to crawl some informations on the website of Northest Nankai Univers
 ### Capital_Normal_University.py
 
 It is meant to crawl some informations on the website of Northest Capital Normal University. 
+
+### Beijing_Normal_University.py
+
+It is meant to crawl some informations on the website of Beijing Normal University. 
+
+### Tsinghua_University.py
+
+It is meant to crawl some informations on the website of Tsinghua University. 

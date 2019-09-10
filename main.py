@@ -12,6 +12,8 @@ import Northest_Normal_University
 import Jilin_University
 import Nankai_University
 import Capital_Normal_University
+import Beijing_Normal_University
+import Tsinghua_University
 
 def main():
 	mr.initExcel()
@@ -28,6 +30,8 @@ def main():
 	Jilin_University.JLU()
 	Nankai_University.NKU()
 	Capital_Normal_University.CNU()
+	Beijing_Normal_University.BNU()
+	Tsinghua_University.THU()
 
 if __name__ == '__main__':
 	main()
