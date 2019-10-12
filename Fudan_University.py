@@ -51,6 +51,16 @@ def Professor():
 	browser.close()
 	del browser
 
+def Academician():
+	url = 'http://math.fudan.edu.cn/content.aspx?info_lb=574&flag=526'
+	browser = webdriver.Chrome()
+	browser.get(url)
+	page = browser.find_elements_by_xpath('//*[@id="size"]/div[1]/div/strong')
+	count = len(page)
+	browser.close()
+	print('院士：　' + str(count))
+	writeToExcel(4, count)
+
 def monographPatent(urln, x, name):
 	url = 'http://math.fudan.edu.cn/content.aspx?info_lb=' + urln + '&flag=527'
 	global browser
@@ -127,3 +137,5 @@ def FU():
 	count = Projects_1()
 	Projects_2(count)
 	Library()
+
+Academician()
