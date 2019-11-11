@@ -74,3 +74,19 @@ It is meant to crawl some informations on the website of Beijing Normal Universi
 ### Tsinghua_University.py
 
 It is meant to crawl some informations on the website of Tsinghua University. 
+
+### Awards.py
+
+It is meant to crawl the file: 2018年国家级教学成果奖获奖项目名单.docx
+
+### Teaching_Demonstration.py
+
+It is meant to crawl the file: 2015年国家级实验教学示范中心入选名单.xls
+
+### Others.py
+
+It is meant to crawl the file: 2017 年高等学校科技统计资料汇编.pdf
+
+### Projects.py
+
+It is meant to crawl the file: 结题项目统计.xlsx

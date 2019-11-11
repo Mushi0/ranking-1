@@ -14,6 +14,8 @@ import Nankai_University
 import Capital_Normal_University
 import Beijing_Normal_University
 import Tsinghua_University
+import Awards
+import Others
 
 def main():
 	mr.initExcel()
@@ -32,6 +34,8 @@ def main():
 	Capital_Normal_University.CNU()
 	Beijing_Normal_University.BNU()
 	Tsinghua_University.THU()
+	Awards.AWD()
+	Others.OTH()
 
 if __name__ == '__main__':
 	main()

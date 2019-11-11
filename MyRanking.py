@@ -49,3 +49,12 @@ def parse2(element, pre, aft):
 	temp = re.findall(pattern1, temp)
 	count = len(temp) - 1
 	return count
+
+def saveOneFile(file_name, url):
+	headers = {
+		'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
+	}
+	resp = requests.get(url, headers = headers)
+	with open('Files/' + file_name, 'wb') as f:
+		f.write(resp.content)
+		print('Already Downloaded', file_name)
